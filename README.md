@@ -3,7 +3,11 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+I extended the already presented code with the the method `naked_twins` and included 
+this constraint propagation strategy in the `reduce_puzzle` method. I extended the 
+definition of twins to be: 
+
+_A number of boxes, X, where they permit the same values and the number values permitted is X_
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  

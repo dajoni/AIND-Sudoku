@@ -31,15 +31,34 @@ def assign_value(values, box, value):
 
 def naked_twins(values):
     """Eliminate values using the naked twins strategy.
+
+    Twins are defined as X boxes in a unit containing equal possibilities of length X
     Args:
         values(dict): a dictionary of the form {'box_name': '123456789', ...}
 
     Returns:
         the values dictionary with the naked twins eliminated from peers.
     """
-
     # Find all instances of naked twins
-    # Eliminate the naked twins as possibilities for their peers
+    for unit in unitlist:
+        flipped_unit = {}
+        # Build a flipped dictionary of the unit
+        for box in unit:
+            if values[box] not in flipped_unit:
+                flipped_unit[values[box]] = [box]
+            else:
+                flipped_unit[values[box]].append(box)
+        # Find the candidates!
+        twins = [value for value, box in flipped_unit.items() if len(flipped_unit[value]) == len(value)]
+        # Eliminate the naked twins as possibilities for their peers
+        for twin_value in twins:
+            boxes_to_eliminate = [box for box in unit if box not in flipped_unit[twin_value]]
+            for box in boxes_to_eliminate:
+                new_value = values[box]
+                for digit in twin_value:
+                    new_value = new_value.replace(digit, '')
+                assign_value(values, box, new_value)
+    return values
 
 
 def grid_values(grid):
@@ -119,6 +138,7 @@ def reduce_puzzle(values):
         solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
         values = eliminate(values)
         values = only_choice(values)
+        values = naked_twins(values)
         solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
         stalled = solved_values_before == solved_values_after
         if len([box for box in values.keys() if len(values[box]) == 0]):
@@ -156,6 +176,7 @@ def solve(grid):
     """
     values = grid_values(grid)
     return search(values)
+
 
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
