@@ -8,12 +8,17 @@ def cross(a, b):
     return [s + t for s in a for t in b]
 
 
+def diagonals(a, b):
+    return [row + col for row, col in zip(a, b)]
+
+
 boxes = cross(rows, cols)
 
 row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC', 'DEF', 'GHI') for cs in ('123', '456', '789')]
-unitlist = row_units + column_units + square_units
+diagonal_units = [diagonals(rows, cols), diagonals(reversed(rows), cols)]
+unitlist = row_units + column_units + square_units + diagonal_units
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s], [])) - set([s])) for s in boxes)
 
@@ -49,7 +54,8 @@ def naked_twins(values):
             else:
                 flipped_unit[values[box]].append(box)
         # Find the candidates!
-        twins = [value for value, box in flipped_unit.items() if len(flipped_unit[value]) == len(value)]
+        twins = [value for value, box in flipped_unit.items()
+                 if (len(flipped_unit[value]) == len(value) and len(value) > 1)]
         # Eliminate the naked twins as possibilities for their peers
         for twin_value in twins:
             boxes_to_eliminate = [box for box in unit if box not in flipped_unit[twin_value]]

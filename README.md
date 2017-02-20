@@ -11,8 +11,9 @@ _A number of boxes, X, where they permit the same values and the number values p
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
 
+By extending the `unitlist` in the already presented code with the two new units, the diagonals, 
+all constraints are now also applied to these units.
 ### Install
 
 This project requires **Python 3**.

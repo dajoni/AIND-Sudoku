@@ -1,4 +1,5 @@
 import solution
+import solution_test
 import unittest
 
 class TestNakedTwins(unittest.TestCase):
@@ -44,7 +45,14 @@ class TestNakedTwins(unittest.TestCase):
         self.assertEqual(values['E7'], '27')
         self.assert_grid_empty_except(values, ['A7', 'B7', 'C7', 'D7', 'E7'])
 
-
+    def test_naked_twin_in_diagonal(self):
+        values = self.get_simple_grid()
+        values['B2'] = '49'
+        values['E5'] = '49'
+        values['F6'] = '2547'
+        values = solution.naked_twins(values)
+        self.assertEqual(values['F6'], '257')
+        self.assert_grid_empty_except(values, ['B2', 'E5', 'F6'])
 
 if __name__ == '__main__':
     unittest.main()
